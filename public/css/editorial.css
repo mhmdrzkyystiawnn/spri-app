@@ -1,0 +1,792 @@
+/* SPRI Official Maritime Editorial Design System */
+:root {
+    /* Color Tokens - Official Maritime Palette */
+    --navy-primary: #1B365D;       /* Deep Maritime Navy (Primary/Accent) */
+    --navy-dark: #12243E;          /* Darker Maritime Navy (Hover/Active) */
+    --navy-light: #2A4D7E;         /* Lighter Navy for borders/accents */
+    --navy-surface: #0F1D33;       /* Deepest Navy for headers/strips */
+    --navy-subtle: #EFF6FF;        /* Soft Blue Tint */
+    
+    --canvas: #FBFBFA;             /* Warm Bone / Paper Tone Canvas */
+    --canvas-card: #FFFFFF;        /* Crisp Surface White */
+    --canvas-subtle: #F4F1EA;      /* Muted Warm Surface */
+    --canvas-muted: #F8FAFC;       /* Cool Off-white */
+    
+    --border: #E2E8F0;             /* Soft Border 1px */
+    --border-strong: #CBD5E1;      /* Crisp Control Border */
+    --border-dark: #94A3B8;        /* Emphasized Border */
+    --border-control: #64748B;     /* Slate-500: WCAG 1.4.11 Form Control Border (>= 3:1 contrast against #FBFBFA, ~4.6:1) */
+    
+    --ink: #1C1917;                /* Charcoal Ink (Primary Text) */
+    --ink-muted: #57534E;          /* Muted Secondary Text */
+    --ink-faint: #78716C;          /* Tertiary / Timestamp Text */
+    
+    /* Functional Semantic Colors (Only for danger/destructive/error) */
+    --danger: #DC2626;             /* Functional Red */
+    --danger-dark: #B91C1C;        /* Dark Red Hover */
+    --danger-bg: #FEF2F2;          /* Light Red Background */
+    --danger-border: #FECACA;      /* Red Border */
+    
+    --warning: #B45309;            /* Muted Amber */
+    --warning-bg: #FFFBEB;
+    --warning-border: #FDE68A;
+    
+    --success: #047857;            /* Sage / Emerald */
+    --success-bg: #F0FDF4;
+    --success-border: #15803D;     /* Emerald-700: WCAG Compliant Valid State Border (>= 3:1 contrast) */
+    --success-border-subtle: #BBF7D0; /* Soft Green Border for badges */
+    
+    --info: #1D4ED8;               /* Maritime Blue */
+    --info-bg: #EFF6FF;
+    --info-border: #BFDBFE;
+
+    /* Legacy CSS Variable Aliases for Backward Compatibility */
+    --accent: var(--navy-primary);
+    --accent-hover: var(--navy-dark);
+    --navy: var(--navy-surface);
+
+    /* Proportional Radii (No giant pill buttons) */
+    --radius-xs: 2px;
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+
+    /* Typography */
+    --font-serif: "Newsreader", "Charter", "Iowan Old Style", "Cambria", Georgia, serif;
+    --font-sans: "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    
+    /* Subtle Elevated Shadows (No heavy box-shadows) */
+    --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+    --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+}
+
+*, ::before, ::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+}
+
+body {
+    background-color: var(--canvas);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.font-serif {
+    font-family: var(--font-serif);
+}
+
+.font-mono {
+    font-family: var(--font-mono);
+}
+
+/* Tabular Numerals for Registration Codes, Metrics, Dates, and Currencies */
+.font-mono,
+.tabular-nums,
+td.font-mono,
+span.font-mono,
+time {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Keyboard Accessibility - Skip to Content */
+.skip-link {
+    position: absolute;
+    top: -9999px;
+    left: 1rem;
+    z-index: 100;
+    padding: 0.5rem 1rem;
+    background-color: var(--navy-primary);
+    color: #ffffff;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    transition: top 0.15s ease-in-out;
+}
+
+.skip-link:focus {
+    top: 1rem;
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+}
+
+/* Normalized Status Badges - Square / Rounded-sm (No Giant Pills) */
+.badge-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.2rem 0.55rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    border: 1px solid currentColor;
+    letter-spacing: 0.02em;
+    line-height: 1.25;
+}
+
+/* Neutral Slate - Menunggu / Pending */
+.status-pending {
+    background-color: #f8fafc;
+    color: #475569;
+    border-color: #cbd5e1;
+}
+
+/* Soft Blue - Sedang Diverifikasi / In Review */
+.status-in_review {
+    background-color: #eff6ff;
+    color: #1e40af;
+    border-color: #bfdbfe;
+}
+
+/* Muted Amber - Perlu Perbaikan / Needs Revision */
+.status-needs_revision {
+    background-color: #fffbeb;
+    color: #92400e;
+    border-color: #fde68a;
+}
+
+/* Sage / Emerald - Disetujui / Approved */
+.status-approved {
+    background-color: #f0fdf4;
+    color: #166534;
+    border-color: #bbf7d0;
+}
+
+/* Functional Red - Ditolak / Rejected */
+.status-rejected {
+    background-color: #fef2f2;
+    color: #b91c1c;
+    border-color: #fecaca;
+}
+
+/* Crisp Editorial Cards - No Heavy Shadows */
+.editorial-card {
+    background: var(--canvas-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+}
+
+.editorial-header {
+    background-color: #f8fafc;
+    border-bottom: 1px solid var(--border);
+}
+
+/* Official Maritime Header Strip */
+.official-strip,
+.admin-navbar,
+.official-strip-admin {
+    background-color: var(--navy-primary) !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid var(--navy-light) !important;
+}
+
+.panel-authority-navy {
+    background-color: var(--navy-primary) !important;
+    color: #ffffff !important;
+    border-color: var(--navy-light) !important;
+}
+
+.badge-navy-dark {
+    background-color: var(--navy-dark) !important;
+    color: #fcd34d !important;
+    border: 1px solid rgba(251, 191, 36, 0.4) !important;
+}
+
+/* Fallback utilities for arbitrary classes */
+.bg-\[\#1B365D\], [class*="bg-[#1B365D]"] {
+    background-color: #1B365D !important;
+}
+.bg-\[\#12243E\], [class*="bg-[#12243E]"] {
+    background-color: #12243E !important;
+}
+.border-\[\#2A4D7E\], [class*="border-[#2A4D7E]"] {
+    border-color: #2A4D7E !important;
+}
+
+/* ==========================================================================
+   FORM CONTROLS (7 STATES - WCAG 2.1 SC 1.4.11 COMPLIANT >= 3:1 CONTRAST)
+   Unified Selectors: text, number, date, email, tel, password, select,
+   textarea, dropzone file, and .editorial-input.
+   Tactile Transitions: 150-200ms ease-out (Zero Layout Shift)
+   ========================================================================== */
+
+/* 1. IDLE STATE: 1px border tegas var(--border-control) pada background putih bersih #FFFFFF */
+.editorial-input,
+.form-control,
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+select,
+textarea {
+    border: 1px solid var(--border-control);
+    background-color: #FFFFFF;
+    color: var(--ink);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.02);
+    transition: border-color 0.18s ease-out, box-shadow 0.18s ease-out, background-color 0.18s ease-out, color 0.18s ease-out;
+}
+
+/* 2. HOVER STATE: Border menguat ke --navy-light (#2A4D7E) + box-shadow halus */
+.editorial-input:hover:not(:disabled):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500),
+.form-control:hover:not(:disabled):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500),
+input[type="text"]:hover:not(:disabled):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500),
+input[type="number"]:hover:not(:disabled):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500),
+input[type="date"]:hover:not(:disabled):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500),
+input[type="email"]:hover:not(:disabled):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500),
+input[type="tel"]:hover:not(:disabled):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500),
+input[type="password"]:hover:not(:disabled):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500),
+select:hover:not(:disabled):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500),
+textarea:hover:not(:disabled):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500) {
+    border-color: var(--navy-light);
+    box-shadow: 0 1px 2px rgba(27, 54, 93, 0.05);
+}
+
+/* 3. FOCUS STATE: Border --navy-primary (#1B365D) + focus ring jelas 3px (box-shadow 0 0 0 3px rgba(27, 54, 93, 0.2)) */
+.editorial-input:focus,
+.editorial-input:focus-visible,
+.form-control:focus,
+.form-control:focus-visible,
+input[type="text"]:focus,
+input[type="text"]:focus-visible,
+input[type="number"]:focus,
+input[type="number"]:focus-visible,
+input[type="date"]:focus,
+input[type="date"]:focus-visible,
+input[type="email"]:focus,
+input[type="email"]:focus-visible,
+input[type="tel"]:focus,
+input[type="tel"]:focus-visible,
+input[type="password"]:focus,
+input[type="password"]:focus-visible,
+select:focus,
+select:focus-visible,
+textarea:focus,
+textarea:focus-visible {
+    outline: none;
+    border-color: var(--navy-primary);
+    box-shadow: 0 0 0 3px rgba(27, 54, 93, 0.2);
+}
+
+/* 4. FILLED STATE: Border stabil var(--border-control) pada background putih bersih */
+.editorial-input:not(:placeholder-shown):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500):not(.is-valid),
+.form-control:not(:placeholder-shown):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500):not(.is-valid),
+input[type="text"]:not(:placeholder-shown):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500):not(.is-valid),
+input[type="number"]:not(:placeholder-shown):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500):not(.is-valid),
+input[type="date"]:not(:placeholder-shown):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500):not(.is-valid),
+input[type="email"]:not(:placeholder-shown):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500):not(.is-valid),
+input[type="tel"]:not(:placeholder-shown):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500):not(.is-valid),
+input[type="password"]:not(:placeholder-shown):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500):not(.is-valid),
+textarea:not(:placeholder-shown):not(:focus):not(.has-error):not(.is-invalid):not(.border-rose-500):not(.is-valid),
+.editorial-input.is-filled,
+.form-control.is-filled,
+[data-filled="true"] {
+    border-color: var(--border-control);
+    background-color: #FFFFFF;
+}
+
+/* 5. ERROR STATE: Border merah --danger (#DC2626) + ring 3px rgba(220, 38, 38, 0.25) */
+.editorial-input.has-error,
+.editorial-input.is-invalid,
+.editorial-input.border-rose-500,
+.form-control.has-error,
+.form-control.is-invalid,
+input[type="text"].has-error,
+input[type="text"].is-invalid,
+input[type="text"].border-rose-500,
+input[type="number"].has-error,
+input[type="number"].is-invalid,
+input[type="number"].border-rose-500,
+input[type="date"].has-error,
+input[type="date"].is-invalid,
+input[type="date"].border-rose-500,
+input[type="email"].has-error,
+input[type="email"].is-invalid,
+input[type="email"].border-rose-500,
+input[type="tel"].has-error,
+input[type="tel"].is-invalid,
+input[type="tel"].border-rose-500,
+input[type="password"].has-error,
+input[type="password"].is-invalid,
+input[type="password"].border-rose-500,
+select.has-error,
+select.is-invalid,
+select.border-rose-500,
+textarea.has-error,
+textarea.is-invalid,
+textarea.border-rose-500,
+[aria-invalid="true"] {
+    border-color: var(--danger) !important;
+}
+
+.editorial-input.has-error:focus,
+.editorial-input.is-invalid:focus,
+.editorial-input.border-rose-500:focus,
+.form-control.has-error:focus,
+.form-control.is-invalid:focus,
+input[type="text"].has-error:focus,
+input[type="text"].is-invalid:focus,
+input[type="text"].border-rose-500:focus,
+input[type="number"].has-error:focus,
+input[type="number"].is-invalid:focus,
+input[type="number"].border-rose-500:focus,
+input[type="date"].has-error:focus,
+input[type="date"].is-invalid:focus,
+input[type="date"].border-rose-500:focus,
+input[type="email"].has-error:focus,
+input[type="email"].is-invalid:focus,
+input[type="email"].border-rose-500:focus,
+input[type="tel"].has-error:focus,
+input[type="tel"].is-invalid:focus,
+input[type="tel"].border-rose-500:focus,
+input[type="password"].has-error:focus,
+input[type="password"].is-invalid:focus,
+input[type="password"].border-rose-500:focus,
+select.has-error:focus,
+select.is-invalid:focus,
+select.border-rose-500:focus,
+textarea.has-error:focus,
+textarea.is-invalid:focus,
+textarea.border-rose-500:focus,
+[aria-invalid="true"]:focus {
+    outline: none;
+    border-color: var(--danger) !important;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.25) !important;
+}
+
+/* 6. VALID STATE: Border hijau --success-border (#15803D) saat blur jika data valid */
+.editorial-input.is-valid,
+.editorial-input.has-success,
+.form-control.is-valid,
+.form-control.has-success,
+input[type="text"].is-valid,
+input[type="number"].is-valid,
+input[type="date"].is-valid,
+input[type="email"].is-valid,
+input[type="tel"].is-valid,
+input[type="password"].is-valid,
+select.is-valid,
+textarea.is-valid,
+[data-valid="true"] {
+    border-color: var(--success-border) !important;
+}
+
+.editorial-input.is-valid:focus,
+.form-control.is-valid:focus,
+input[type="text"].is-valid:focus,
+input[type="number"].is-valid:focus,
+input[type="date"].is-valid:focus,
+input[type="email"].is-valid:focus,
+input[type="tel"].is-valid:focus,
+input[type="password"].is-valid:focus,
+select.is-valid:focus,
+textarea.is-valid:focus,
+[data-valid="true"]:focus {
+    outline: none;
+    border-color: var(--success-border) !important;
+    box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.2) !important;
+}
+
+/* 7. DISABLED STATE: Background #F1F5F9, opacity 0.6, cursor not-allowed */
+.editorial-input:disabled,
+.editorial-input[disabled],
+.editorial-input.is-disabled,
+.form-control:disabled,
+.form-control[disabled],
+.form-control.is-disabled,
+input[type="text"]:disabled,
+input[type="text"][disabled],
+input[type="number"]:disabled,
+input[type="number"][disabled],
+input[type="date"]:disabled,
+input[type="date"][disabled],
+input[type="email"]:disabled,
+input[type="email"][disabled],
+input[type="tel"]:disabled,
+input[type="tel"][disabled],
+input[type="password"]:disabled,
+input[type="password"][disabled],
+select:disabled,
+select[disabled],
+textarea:disabled,
+textarea[disabled] {
+    background-color: #F1F5F9 !important;
+    border-color: #CBD5E1 !important;
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+}
+
+/* Dropzone File Control - 7 States */
+.dropzone-file,
+.file-dropzone {
+    border: 2px dashed var(--border-control);
+    background-color: #FFFFFF;
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.18s ease-out, background-color 0.18s ease-out, box-shadow 0.18s ease-out;
+}
+
+.dropzone-file:hover,
+.file-dropzone:hover {
+    border-color: var(--navy-light);
+    background-color: #F8FAFC;
+    box-shadow: 0 1px 2px rgba(27, 54, 93, 0.05);
+}
+
+.dropzone-file:focus-within,
+.file-dropzone:focus-within,
+.dropzone-file.is-dragover,
+.file-dropzone.is-dragover {
+    outline: none;
+    border-color: var(--navy-primary);
+    background-color: var(--navy-subtle);
+    box-shadow: 0 0 0 3px rgba(27, 54, 93, 0.2);
+}
+
+.dropzone-file.is-filled,
+.file-dropzone.is-filled {
+    border-color: var(--border-control);
+    background-color: #FFFFFF;
+}
+
+.dropzone-file.has-error,
+.file-dropzone.has-error {
+    border-color: var(--danger) !important;
+    background-color: var(--danger-bg);
+}
+
+.dropzone-file.has-error:focus-within,
+.file-dropzone.has-error:focus-within {
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.25) !important;
+}
+
+.dropzone-file.is-valid,
+.file-dropzone.is-valid {
+    border-color: var(--success-border) !important;
+    background-color: var(--success-bg);
+}
+
+.dropzone-file:disabled,
+.dropzone-file.is-disabled,
+.file-dropzone:disabled,
+.file-dropzone.is-disabled {
+    background-color: #F1F5F9 !important;
+    border-color: #CBD5E1 !important;
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+}
+
+/* Micro-Interactions: Stepper Card & Progress Bar */
+.step-nav-btn {
+    transition: background-color 0.18s ease-out, border-color 0.18s ease-out, box-shadow 0.18s ease-out, transform 0.18s ease-out, opacity 0.18s ease-out;
+}
+
+.step-nav-btn:hover:not(:disabled) {
+    border-color: var(--navy-light);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(27, 54, 93, 0.08);
+}
+
+.step-nav-btn.active,
+.step-nav-btn[aria-current="step"] {
+    border-color: var(--navy-primary);
+    box-shadow: 0 0 0 2px rgba(27, 54, 93, 0.15);
+}
+
+.step-nav-btn.completed {
+    border-color: var(--success-border);
+}
+
+#progress-bar-fill,
+.progress-bar-fill {
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Micro-Interactions: Error Message Slide/Fade and Subtle Shake */
+@keyframes error-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes error-subtle-shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    20%, 60% {
+        transform: translateX(-2px);
+    }
+    40%, 80% {
+        transform: translateX(2px);
+    }
+}
+
+.error-message,
+.form-error,
+.input-error,
+.text-rose-600,
+p.text-rose-600,
+span.text-rose-600,
+div[role="alert"] {
+    animation: error-slide-in 0.18s ease-out forwards;
+}
+
+.has-error-shake {
+    animation: error-subtle-shake 0.35s ease-in-out 1;
+}
+
+/* Normalized Controls - Proportional Radii & Tactile Feedback (150-200ms ease-out, Zero Layout Shift) */
+.btn-primary,
+#next-btn,
+#submit-btn {
+    background-color: var(--navy-primary);
+    color: #ffffff;
+    border: 1px solid var(--navy-primary);
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: var(--shadow-subtle);
+    transition: background-color 0.18s ease-out, border-color 0.18s ease-out, color 0.18s ease-out, transform 0.18s ease-out, box-shadow 0.18s ease-out;
+}
+
+.btn-primary:hover,
+#next-btn:hover {
+    background-color: var(--navy-dark);
+    border-color: var(--navy-dark);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(27, 54, 93, 0.12);
+}
+
+#submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(21, 128, 61, 0.2);
+}
+
+.btn-primary:active,
+#next-btn:active,
+#submit-btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary:focus-visible,
+#next-btn:focus-visible,
+#submit-btn:focus-visible {
+    outline: 2px solid var(--navy-primary);
+    outline-offset: 2px;
+}
+
+.btn-primary:disabled,
+.btn-primary[disabled],
+#next-btn:disabled,
+#submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn-secondary,
+#prev-btn {
+    background-color: #ffffff;
+    color: var(--ink);
+    border: 1px solid var(--border-control);
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: var(--shadow-subtle);
+    transition: background-color 0.18s ease-out, border-color 0.18s ease-out, color 0.18s ease-out, transform 0.18s ease-out, box-shadow 0.18s ease-out;
+}
+
+.btn-secondary:hover,
+#prev-btn:hover {
+    background-color: var(--canvas-subtle);
+    border-color: var(--navy-light);
+    color: var(--ink);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(27, 54, 93, 0.08);
+}
+
+.btn-secondary:active,
+#prev-btn:active {
+    transform: scale(0.98);
+}
+
+.btn-secondary:focus-visible,
+#prev-btn:focus-visible {
+    outline: 2px solid var(--navy-primary);
+    outline-offset: 2px;
+}
+
+.btn-secondary:disabled,
+.btn-secondary[disabled],
+#prev-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Functional Red Button - Specific for Destructive / Delete Actions Only */
+.btn-danger {
+    background-color: #ffffff;
+    color: var(--danger-dark);
+    border: 1px solid var(--danger-border);
+    padding: 0.375rem 0.75rem;
+    font-weight: 500;
+    font-size: 0.8125rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    text-decoration: none;
+    transition: background-color 0.18s ease-out, border-color 0.18s ease-out, color 0.18s ease-out, transform 0.18s ease-out, box-shadow 0.18s ease-out;
+}
+
+.btn-danger:hover {
+    background-color: var(--danger-bg);
+    border-color: var(--danger-dark);
+    color: var(--danger-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.08);
+}
+
+.btn-danger:active {
+    transform: scale(0.98);
+}
+
+.btn-danger:focus-visible {
+    outline: 2px solid var(--danger);
+    outline-offset: 2px;
+}
+
+/* Required Indicator - Semantic Functional Red */
+.text-required {
+    color: var(--danger);
+    font-weight: bold;
+}
+
+/* Accessibility: Reduced Motion (Preserves clarity of focus and validation status without non-essential animations) */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .btn-danger:hover,
+    .step-nav-btn:hover,
+    #next-btn:hover,
+    #prev-btn:hover,
+    #submit-btn:hover {
+        transform: none !important;
+    }
+
+    .btn-primary:active,
+    .btn-secondary:active,
+    .btn-danger:active,
+    #next-btn:active,
+    #prev-btn:active,
+    #submit-btn:active {
+        transform: none !important;
+    }
+
+    #progress-bar-fill,
+    .progress-bar-fill {
+        transition: none !important;
+    }
+
+    .error-message,
+    .form-error,
+    .input-error,
+    .has-error-shake,
+    .text-rose-600,
+    p.text-rose-600,
+    span.text-rose-600,
+    div[role="alert"] {
+        animation: none !important;
+    }
+}
+
+/* Print Optimization for Official Receipts (Lembar Tanda Terima Cetak) */
+@media print {
+    body {
+        background: #ffffff !important;
+        color: #1c1917 !important;
+        font-size: 12pt !important;
+    }
+
+    header,
+    footer,
+    .skip-link,
+    .official-strip,
+    .no-print,
+    .print\:hidden {
+        display: none !important;
+    }
+
+    main {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .editorial-card,
+    .print-card {
+        box-shadow: none !important;
+        border: 1px solid #94a3b8 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    .print-full-width {
+        width: 100% !important;
+    }
+}
+
